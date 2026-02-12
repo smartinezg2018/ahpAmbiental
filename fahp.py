@@ -55,7 +55,7 @@ class Transformer:
         
         return geo_mean
     
-    def define_weights(self, geo_mean, u = 0.6):
+    def define_weights(self, geo_mean, u = 0.5):
         ans = []
         for l , m, h in geo_mean:
             # ans.append(u*l+(1-u)*h)
