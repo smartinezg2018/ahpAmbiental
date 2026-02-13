@@ -2,6 +2,43 @@ import numpy as np
 import random
 
 class Transformer:
+        #normalización de las matrices
+    def normalize_matrix(self, matrix):
+        norm_matrix = matrix.transpose().copy()
+        for i in range(len(norm_matrix)):
+            sum = norm_matrix[i].sum()
+            for j in range(len(norm_matrix[i])):
+                norm_matrix[i][j] = norm_matrix[i][j]/sum 
+        return norm_matrix.transpose()
+    
+    #calculo de los pesos dentro de la matriz
+    def define_weights_ahp(self, matrix):
+        weights = []
+        for i in range(len(matrix)):
+            weights.append(matrix[i].mean())
+        return weights
+
+    def consistency_rate(self, matrices):
+        RI = {
+            1: 0.00, 2: 0.00, 3: 0.58,
+            4: 0.90, 5: 1.12, 6: 1.24,
+            7: 1.32, 8: 1.41, 9: 1.45,
+            10: 1.49, 11: 1.51, 12: 1.48,
+            13: 1.56,14: 1.57,15: 1.59, 16:1.62
+        }
+
+        scores = []
+
+        for i,matrix in enumerate(matrices):
+            weights = self.define_weights_ahp(self.normalize_matrix(matrix))
+            eigvals, eigvecs = np.linalg.eig(matrix)
+            n = len(matrix)
+            nmax = max(eigvals.real)
+            CI = (nmax-n)/(n-1)
+            CR = CI/RI[n]
+            scores.append(CR)
+            print(f"matrix {i+1} CR:", CR )
+        return scores
     
     def calculate_weights(self, matrices):
         fuzzy_matrices = np.array([self.create_fuzzy_matrix(matrix) for matrix in matrices])
@@ -58,8 +95,8 @@ class Transformer:
     def define_weights(self, geo_mean, u = 0.5):
         ans = []
         for l , m, h in geo_mean:
-            # ans.append(u*l+(1-u)*h)
-            ans.append((l+m+h)/3)
+            ans.append(u*l+(1-u)*h)
+            # ans.append((l+m+h)/3)
         ans = np.array(ans)
         return np.array(ans/sum(ans))
     
@@ -75,3 +112,4 @@ class Transformer:
 
             matrices.append(matrix)
         return np.array(matrices)
+    
