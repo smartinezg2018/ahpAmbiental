@@ -123,9 +123,41 @@ class h3_grid:
             how="left"
         )
         # genera puntos de presencia
-        col_binaria = gdf_hex['h3'].isin(puntos_con_hex['h3'])
+        col_binaria = gdf_hex['h3'].isin(puntos_con_hex['h3']).astype(int)
+        # Genera los espacios NaN donde no se hacen computos
+        col_binaria = col_binaria.replace(1,np.nan)
         
         return col_binaria 
+
+    def vars_ahp(self,dic_data,df_data) -> gpd.GeoDataFrame:
+
+        # Crea la malla de h3
+        gdf_hex = self.get_grid()
+
+        # La llave debe ser el codigo de la variable
+        for key,data dic_data.keys():
+            # busqueda en el dataframe
+            mask = df_data['Codigo'] == key
+            # Extrae el tipo de variable para clasificarla
+            tipo = df_data[mask]['tipo'].values
+            # Clasificacion
+            if tipo == 'binaria':
+                var_series = self.var_binarias(data) 
+            elif tipo == 'continua':
+                var_series = self.var_continuas(data)
+            elif tipo == 'excluyente':
+                var_series = self.var_excluyentes(data)
+
+            gdf_hex[key] = var_series
+
+        return gdf_hex
+
+        
+            
+
+    
+
+    
     
 
     
