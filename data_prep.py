@@ -6,6 +6,7 @@ import geopandas as gpd
 import numpy as np
 import os
 import pandas as pd
+from rasterstats import zonal_stats
 
 class h3_grid:
 
@@ -93,11 +94,12 @@ class h3_grid:
 
     def var_continuas(self,ds)->pd.Series:
 
-        gdf_hex = get_grid()
+        gdf_hex = self.get_grid()
         stats = zonal_stats(
             gdf_hex,
             ds.values[0],                    # array 2D
-            affine=ds.rio.transform(),       # transformación geoespacial
+            affine=ds.rio.transform(),     # transformación geoespacial 
+            nodata = np.nan,
             stats=['mean'],
             nodata=ds.rio.nodata
         )
@@ -127,30 +129,68 @@ class h3_grid:
         # Genera los espacios NaN donde no se hacen computos
         col_binaria = col_binaria.replace(1,np.nan)
         
-        return col_binaria 
+        return col_binaria
 
-    def vars_ahp(self,dic_data,df_data) -> gpd.GeoDataFrame:
+    def open_var(self,path):
+        """
+        Lee los archivos shape o raster y los prepara para incluirlos
+        geodatafrma de h3
+        """
+        files = os.listdir(path)
+
+        # busca sobre los archivos y revisa si hay tif o shape
+        for file in files:
+
+            if file.endswith('.tif'):
+                return xr.open_dataarray(os.path.join(path,file))
+
+                
+            elif file.endswith('.shp'):
+                return gpd.read_file(os.path.join(path,file))
+
+
+            
+        raise Exception('Ningun archivo es shape o raster. Revise la informacion')
+
+            
+
+    def vars_ahp(self,path,df_data):
 
         # Crea la malla de h3
         gdf_hex = self.get_grid()
+        
+        for idx in df_data.index:
 
-        # La llave debe ser el codigo de la variable
-        for key,data dic_data.keys():
-            # busqueda en el dataframe
-            mask = df_data['Codigo'] == key
-            # Extrae el tipo de variable para clasificarla
-            tipo = df_data[mask]['tipo'].values
+            # Extrae el codigo y tipo de dato
+            cod = df_data.iloc[idx,0]
+            tipo = df_data.iloc[idx,2]
+            
+            print(f'Empezando variable {cod}...')
+            # Lectura de datos
+            file_path = os.path.join(path,cod)
+            data = self.open_var(file_path)
+
             # Clasificacion
-            if tipo == 'binaria':
+            if tipo == 'binario':
                 var_series = self.var_binarias(data) 
             elif tipo == 'continua':
                 var_series = self.var_continuas(data)
             elif tipo == 'excluyente':
                 var_series = self.var_excluyentes(data)
+            else:
+                raise Exception('Ningun archivo es shape o raster. Revise la informacion')
+            # Actualiza el dataframe
+            gdf_hex[cod] = var_series
+                
 
-            gdf_hex[key] = var_series
+            
 
-        return gdf_hex
+
+        return gdf_hex 
+
+        
+        
+        
 
         
             
