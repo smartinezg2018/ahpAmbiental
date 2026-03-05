@@ -101,7 +101,6 @@ class h3_grid:
             affine=ds.rio.transform(),     # transformación geoespacial 
             nodata = np.nan,
             stats=['mean'],
-            nodata=ds.rio.nodata
         )
 
         # Deberia regresar el array
