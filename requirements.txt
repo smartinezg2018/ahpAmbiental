@@ -1,0 +1,27 @@
+# Core Data Science
+numpy
+pandas
+
+# Geospatial & Raster Powerhouses
+shapely
+geopandas
+rasterio
+h3
+
+# Xarray & Necessary IO Engines
+xarray
+netcdf4      # Critical for opening .nc files
+h5netcdf     # Alternative engine for HDF5-based files
+scipy        # The engine you currently have
+rasterstats
+fiona
+rasterio
+shapely
+rioxarray
+netcdf4 
+h5netcdf 
+scipy
+
+# Optional but recommended for performance
+dask
+toolz

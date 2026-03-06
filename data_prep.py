@@ -141,7 +141,7 @@ class h3_grid:
         for file in files:
 
             if file.endswith('.tif'):
-                return xr.open_dataarray(os.path.join(path,file))
+                return xr.open_dataarray(os.path.join(path,file),engine="rasterio")
 
                 
             elif file.endswith('.shp'):
