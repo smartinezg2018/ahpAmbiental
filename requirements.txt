@@ -1,6 +1,7 @@
 # Core Data Science
 numpy
 pandas
+matplotlib
 
 # Geospatial & Raster Powerhouses
 shapely
