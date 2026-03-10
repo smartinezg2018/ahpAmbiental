@@ -130,6 +130,33 @@ class h3_grid:
         
         return col_binaria
 
+    def var_categoricas(self,gdf)->gpd.Series:
+
+        gdf_hex = self.get_grid()
+        
+        if gdf_hex.crs != gdf.crs:
+            gdf = gdf.to_crs(gdf_hex.crs)
+
+        
+        puntos_con_hex = gpd.sjoin(
+            gdf, 
+            gdf_hex, 
+            how="left",
+        )
+        # Extrae los valores que más se repiten.
+        moda_valores = puntos_con_hex.groupby('h3').agg(pd.Series.mode)
+        # creacion de dataframe
+        df_moda_valores = pd.DataFrame(moda_valores)
+        # Relacion de valores con cada hexágono
+        df = pd.merge(
+            gdf_hex,
+            df_moda_valores,
+            on='h3',
+            how='left'
+        )
+        # Retorna la ultima columna
+        return df.iloc[:,-1]
+
     def open_var(self,path):
         """
         Lee los archivos shape o raster y los prepara para incluirlos
