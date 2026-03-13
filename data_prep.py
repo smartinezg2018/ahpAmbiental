@@ -143,8 +143,12 @@ class h3_grid:
             gdf_hex, 
             how="left",
         )
+        # Columna de analisis
+        if len(gdf.columns) > 2:
+            raise "El geodataframe solo puede tener dos columnas"
+        col = gdf.columns[0]
         # Extrae los valores que más se repiten.
-        moda_valores = puntos_con_hex.groupby('h3').agg(pd.Series.mode)
+        moda_valores = puntos_con_hex.groupby('h3')[col].agg(pd.Series.mode)
         # creacion de dataframe
         df_moda_valores = pd.DataFrame(moda_valores)
         # Relacion de valores con cada hexágono
