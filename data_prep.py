@@ -34,6 +34,7 @@ class h3_grid:
             )
         )
         return polygon
+    
     def get_grid(self,) -> gpd.GeoDataFrame:
         """
         Retorna la grilla H3 para una resolución dada.
@@ -61,7 +62,7 @@ class h3_grid:
         gdf_hex = gpd.GeoDataFrame(
             {'h3': hexagons},
             geometry=geometry,
-            crs= self.crs_raster
+            crs = self.crs_raster
         )
         if self.crs_raster != self.crs:
             gdf_hex = gdf_hex.to_crs(self.crs)
@@ -130,7 +131,7 @@ class h3_grid:
         
         return col_binaria
 
-    def var_categoricas(self,gdf)->gpd.Series:
+    def var_categoricas(self,gdf)->pd.Series:
 
         gdf_hex = self.get_grid()
         
@@ -143,23 +144,32 @@ class h3_grid:
             gdf_hex, 
             how="left",
         )
-        # Columna de analisis
-        if len(gdf.columns) > 2:
-            raise "El geodataframe solo puede tener dos columnas"
         col = gdf.columns[0]
-        # Extrae los valores que más se repiten.
-        moda_valores = puntos_con_hex.groupby('h3')[col].agg(pd.Series.mode)
-        # creacion de dataframe
-        df_moda_valores = pd.DataFrame(moda_valores)
-        # Relacion de valores con cada hexágono
-        df = pd.merge(
-            gdf_hex,
-            df_moda_valores,
-            on='h3',
-            how='left'
-        )
-        # Retorna la ultima columna
-        return df.iloc[:,-1]
+        
+        prueba = puntos_con_hex[['h3','geometry',col]]
+        prueba['area'] = prueba['geometry'].area/1e6
+        result = prueba.groupby(['h3', col])['area'].sum().reset_index()
+        final_labels = result.loc[result.groupby('h3')['area'].idxmax()]
+
+        final = final_labels.merge(gdf_hex, on='h3', how='left')
+        return final
+        # # Columna de analisis
+        # if len(gdf.columns) > 2:
+        #     raise "El geodataframe solo puede tener dos columnas"
+        # col = gdf.columns[0]
+        # # Extrae los valores que más se repiten.
+        # moda_valores = puntos_con_hex.groupby('h3')[col].agg(pd.Series.mode)
+        # # creacion de dataframe
+        # df_moda_valores = pd.DataFrame(moda_valores)
+        # # Relacion de valores con cada hexágono
+        # df = pd.merge(
+        #     gdf_hex,
+        #     df_moda_valores,
+        #     on='h3',
+        #     how='left'
+        # )
+        # # Retorna la ultima columna
+        # return df.iloc[:,-1]
 
     def open_var(self,path):
         """
@@ -207,6 +217,8 @@ class h3_grid:
                 var_series = self.var_continuas(data)
             elif tipo == 'excluyente':
                 var_series = self.var_excluyentes(data)
+            elif tipo =='categorica':
+                 var_series = self.var_categoricas(data)
             else:
                 raise Exception('Ningun archivo es shape o raster. Revise la informacion')
             # Actualiza el dataframe
