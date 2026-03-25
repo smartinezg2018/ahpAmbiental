@@ -131,7 +131,21 @@ class h3_grid:
         
         return col_binaria
 
-    def var_categoricas(self,gdf)->pd.Series:
+    def var_categoricas(self,gdf) -> pd.Series:
+        """
+        Parámetros:
+            entregar data frame de pandas con la variable
+            categórica en la primera columna, necesaria la geometría
+            para su procesamiento
+        Proceso:
+            se unen los dataframes del h3 con los datos entregados,
+            luego se computan las areas de cada una de la coberturas 
+            y se toma la cobertura con más area acumulada en cada polígono
+        
+        return:
+            se entrega la columna con las coberturas predominantes en cada uno
+              de los polígonos
+        """
 
         gdf_hex = self.get_grid()
         
@@ -148,28 +162,12 @@ class h3_grid:
         
         prueba = puntos_con_hex[['h3','geometry',col]]
         prueba['area'] = prueba['geometry'].area/1e6
+
         result = prueba.groupby(['h3', col])['area'].sum().reset_index()
         final_labels = result.loc[result.groupby('h3')['area'].idxmax()]
 
-        final = final_labels.merge(gdf_hex, on='h3', how='left')
-        return final
-        # # Columna de analisis
-        # if len(gdf.columns) > 2:
-        #     raise "El geodataframe solo puede tener dos columnas"
-        # col = gdf.columns[0]
-        # # Extrae los valores que más se repiten.
-        # moda_valores = puntos_con_hex.groupby('h3')[col].agg(pd.Series.mode)
-        # # creacion de dataframe
-        # df_moda_valores = pd.DataFrame(moda_valores)
-        # # Relacion de valores con cada hexágono
-        # df = pd.merge(
-        #     gdf_hex,
-        #     df_moda_valores,
-        #     on='h3',
-        #     how='left'
-        # )
-        # # Retorna la ultima columna
-        # return df.iloc[:,-1]
+        return final_labels[col]
+
 
     def open_var(self,path):
         """
@@ -223,10 +221,6 @@ class h3_grid:
                 raise Exception('Ningun archivo es shape o raster. Revise la informacion')
             # Actualiza el dataframe
             gdf_hex[cod] = var_series
-                
-
-            
-
 
         return gdf_hex 
 
