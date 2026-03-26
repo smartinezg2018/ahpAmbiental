@@ -144,7 +144,7 @@ class h3_grid:
         
         return:
             se entrega la columna con las coberturas predominantes en cada uno
-              de los polígonos
+            de los polígonos
         """
 
         gdf_hex = self.get_grid()
@@ -158,6 +158,7 @@ class h3_grid:
             gdf_hex, 
             how="left",
         )
+        # return puntos_con_hex
         col = gdf.columns[0]
         
         prueba = puntos_con_hex[['h3','geometry',col]]
@@ -165,9 +166,13 @@ class h3_grid:
 
         result = prueba.groupby(['h3', col])['area'].sum().reset_index()
         final_labels = result.loc[result.groupby('h3')['area'].idxmax()]
+        final = pd.merge(
+            gdf_hex,
+            final_labels,
+            how = 'left'
+        )
 
-        return final_labels[col]
-
+        return final[col]
 
     def open_var(self,path):
         """
