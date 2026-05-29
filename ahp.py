@@ -9,29 +9,24 @@ class Transformer:
         norm_matrix = self.normalize_matrix(matrix)
         return self.define_weights(norm_matrix)
 
-    # geometrical mean
     def geomean(self, matrices):
-        base = np.ones((len(matrices[0]),len(matrices[0][0])))
+        base = np.ones((len(matrices[0]), len(matrices[0][0])))
         for matrix in matrices:
-            base*=matrix
-        base = base**(1/len(matrices[0]))
+            base *= matrix
+        base = base ** (1 / len(matrices)) 
         return base
 
-    #normalización de las matrices
     def normalize_matrix(self, matrix):
         norm_matrix = matrix.transpose().copy()
         for i in range(len(norm_matrix)):
-            sum = norm_matrix[i].sum()
+            col_sum = norm_matrix[i].sum()  
             for j in range(len(norm_matrix[i])):
-                norm_matrix[i][j] = norm_matrix[i][j]/sum 
+                norm_matrix[i][j] /= col_sum
         return norm_matrix.transpose()
 
-    #calculo de los pesos dentro de la matriz
     def define_weights(self, matrix):
-        weights = []
-        for i in range(len(matrix)):
-            weights.append(matrix[i].mean())
-        return weights
+        return [matrix[i].mean() for i in range(len(matrix))]
+    
     
     def consistency_rate(self, matrices):
         RI = {
@@ -49,10 +44,15 @@ class Transformer:
             eigvals, eigvecs = np.linalg.eig(matrix)
             n = len(matrix)
             nmax = max(eigvals.real)
+            print('nmax:', nmax)
             CI = (nmax-n)/(n-1)
             CR = CI/RI[n]
+            print('CI:', CI)
+            print('CR:', CR)
+
+
             scores.append(CR)
-            print(f"matrix {i+1} score: ",nmax," ", CR )
+            print(f"matrix {i+1} score: ",nmax," consistency_rate: ", CR )
         return scores
 
     def simulate_matrices(self, dm_number = 3,criteria_number = 4):
