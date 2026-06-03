@@ -98,7 +98,7 @@ class h3_grid:
         gdf_hex = self.get_grid()
         stats = zonal_stats(
             gdf_hex,
-            ds.values[0],                    # array 2D
+            ds.values[0],                  # array 2D
             affine=ds.rio.transform(),     # transformación geoespacial 
             nodata = np.nan,
             stats=['mean'],
@@ -136,7 +136,8 @@ class h3_grid:
         Parámetros:
             entregar data frame de pandas con la variable
             categórica en la primera columna, necesaria la geometría
-            para su procesamiento
+            para su procesamiento. además se asume que los datos
+            que van a salir son categorias con su valor inicial siendo su score
         Proceso:
             se unen los dataframes del h3 con los datos entregados,
             luego se computan las areas de cada una de la coberturas 
@@ -148,6 +149,7 @@ class h3_grid:
         """
 
         gdf_hex = self.get_grid()
+        col = gdf.columns[0]
         
         if gdf_hex.crs != gdf.crs:
             gdf = gdf.to_crs(gdf_hex.crs)
@@ -158,8 +160,6 @@ class h3_grid:
             gdf_hex, 
             how="left",
         )
-        # return puntos_con_hex
-        col = gdf.columns[0]
         
         prueba = puntos_con_hex[['h3','geometry',col]]
         prueba['area'] = prueba['geometry'].area/1e6
@@ -186,10 +186,9 @@ class h3_grid:
 
             if file.endswith('.tif'):
                 return xr.open_dataarray(os.path.join(path,file),engine="rasterio")
-
-                
+        
             elif file.endswith('.shp'):
-                return gpd.read_file(os.path.join(path,file))
+                return gpd.read_file(os.path.join(path,file),engine='fiona')
 
 
             
@@ -204,12 +203,11 @@ class h3_grid:
         
         for idx in df_data.index:
 
-            # Extrae el codigo y tipo de dato
+            # # Extrae el codigo y tipo de dato
             cod = df_data.iloc[idx,0]
             tipo = df_data.iloc[idx,2]
             
-            print(f'Empezando variable {cod}...')
-            # Lectura de datos
+            print(f'procesando archivo {cod}')
             file_path = os.path.join(path,cod)
             data = self.open_var(file_path)
 

@@ -1,5 +1,7 @@
-*.tif
 __pycache__
 .env
 .xml
 /env
+vars_ambiental_ahp/
+preliminary-map/
+dist/
