@@ -94,8 +94,20 @@ class h3_grid:
 
 
     def var_continuas(self,ds)->pd.Series:
-
+        
         gdf_hex = self.get_grid()
+
+        # Reproject raster to match the grid
+        if ds.rio.crs.to_epsg() != gdf_hex.crs.to_epsg():
+            ds = ds.rio.reproject(gdf_hex.crs)
+
+        # Clip to grid extent
+        bbox = gdf_hex.total_bounds
+        ds = ds.rio.clip_box(
+            minx=bbox[0], miny=bbox[1],
+            maxx=bbox[2], maxy=bbox[3]
+        )
+
         stats = zonal_stats(
             gdf_hex,
             ds.values[0],                  # array 2D
@@ -104,8 +116,10 @@ class h3_grid:
             stats=['mean'],
         )
 
+
         # Deberia regresar el array
         array = pd.Series([s['mean'] for s in stats])
+        # print(array)
 
         return array
 
@@ -200,6 +214,7 @@ class h3_grid:
 
         # Crea la malla de h3
         gdf_hex = self.get_grid()
+        print(gdf_hex.crs)
         
         for idx in df_data.index:
 

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import random
 
-class Transformer:
+class Ahp_calc:
 
     def calculate_weights(self, matrices):
         matrix = self.geomean(matrices)
