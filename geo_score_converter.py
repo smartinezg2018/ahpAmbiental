@@ -28,6 +28,10 @@ class GeoIntervalScorer:
         tipos.columns = tipos.columns.str.strip()
         tipos["Codigo"] = tipos["Codigo"].astype(str).str.strip()
         tipos["Tipo"] = tipos["Tipo"].astype(str).str.strip().str.lower()
+        if "Invertir" in tipos.columns:
+            tipos["Invertir"] = tipos["Invertir"].astype(str).str.strip().str.lower()
+        else:
+            tipos["Invertir"] = "no"
         self.tipos = tipos.drop_duplicates(subset="Codigo", keep="first").set_index("Codigo")
 
     def transform(
@@ -79,7 +83,10 @@ class GeoIntervalScorer:
             return self._score_continuous(series, codigo)
 
         if tipo == "binario":
-            return self._score_binary(series)
+            scored = self._score_binary(series)
+            if self._should_invert(codigo):
+                scored = self._swap_binary_scores(scored)
+            return scored
 
         if tipo == "excluyente":
             return self._score_excluyente(series)
@@ -114,6 +121,18 @@ class GeoIntervalScorer:
             return np.nan
 
         return numeric.map(value_to_score)
+
+    def _should_invert(self, codigo: str) -> bool:
+        if codigo not in self.tipos.index:
+            return False
+        return str(self.tipos.loc[codigo, "Invertir"]).strip().lower() in {"si", "sí", "1", "true", "yes"}
+
+    @staticmethod
+    def _swap_binary_scores(series: pd.Series) -> pd.Series:
+        swapped = series.copy()
+        swapped[series == 0] = 5
+        swapped[series == 5] = 0
+        return swapped
 
     @staticmethod
     def _score_binary(series: pd.Series) -> pd.Series:

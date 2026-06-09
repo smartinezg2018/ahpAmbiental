@@ -1,41 +1,41 @@
-Codigo;Variable;Tipo;Subcriterio;Criterio
-AMB-001-AR;RUNAP;excluyente;Areas;
-AMB-002-A;Reservas ind�genas y territorios colectivos;binario;Areas;
-AMB-003-A;Especies migratorias;binario;Especies;
-AMB-004-A;Reservas y zonas de amortiguamiento de p�ramos;excluyente;Areas;
-AMB-005-A;Especies end�micas;binario;Especies;
-AMB-006-A;Cobertura de suelos;categorica;Condiciones;
-AMB-007-AT;Pendiente del terreno;continua;Condiciones;
-AMB-008-AT;Elevaci�n;continua;Condiciones;
-AMB-009-A;Zonas de riesgo cat�strofes naturales;binario;Amenazas;
-AMB-010-A;Cienagas;excluyente;Areas;
-AMB-011-A;R�os (Drenaje doble);excluyente;Areas;
-AMB-012-A;Humedales RAMSAR;excluyente;Areas;
-AMB-013-A;Lagunas;excluyente;Areas;
-AMB-014-A;Manglares;binario;Areas;
-AMB-015-A;Pantanos;excluyente;Areas;
-AMB-016-A;Humedales OFFSHORE;excluyente;Areas;
-AMB-017-A;Especies terrestres listadas en la IUCN;binario;Especies;
-AMB-019-A;Especies marinas listadas en la IUCN;binario;Especies;
-AMB-020-A;Pastos marinos;binario;Especies;
-AMB-021-A;Areas Coralinas;binario;Areas;
-AMB-022-AT;Corrientes;continua;;
-AMB-023-AT;Marea;continua;;
-AMB-024-AT;Oleaje;continua;;
-AMB-025-AT;Altura significativa de ola;continua;;
-AMB-026-AT;Vientos;continua;;
-AMB-027-T;Direcci�n del viento;continua;;
-AMB-028-AT;Suelos/litolog�a;categorica;Condiciones;
-AMB-029-AT;Fondos marinos;categorica;Condiciones;
-AMB-030-AT;Batimetr�a;continua;Condiciones;
-AMB-031-A;Sismicidad;binario;Amenazas;
-AMB-032-A;IMMA;binario;Especies;
-AMB-033-A;KBAs;binario;Areas;
-AMB-034-A;Reproducci�n aves;binario;Especies;
-AMB-035-A;Grupos funcionales aves IUCN;binario;Especies;
-AMB-036-A;Playas de anidacion tortugas de tortugas marinas;binario;Areas;
-AMB-037-A;Bosque seco tropical;binario;Areas;
-AMB-038-A;Congregaci�n de aves playeras;binario;Especies;
-AMB-039-A;Fallas activas y zonas de fractura;binario;Amenazas;
-AMB-040-A;Amenazas m�ltiples;binario;Amenazas;
-AMB-041-A;inundaciones;categorica;Amenazas;
+Codigo;Variable;Tipo;Subcriterio;Criterio;Invertir
+AMB-001-AR;RUNAP;excluyente;Areas;;no
+AMB-002-A;Reservas ind�genas y territorios colectivos;binario;Areas;;si
+AMB-003-A;Especies migratorias;binario;Especies;;si
+AMB-004-A;Reservas y zonas de amortiguamiento de p�ramos;excluyente;Areas;;no
+AMB-005-A;Especies end�micas;binario;Especies;;si
+AMB-006-A;Cobertura de suelos;categorica;Condiciones;;no
+AMB-007-AT;Pendiente del terreno;continua;Condiciones;;no
+AMB-008-AT;Elevaci�n;continua;Condiciones;;no
+AMB-009-A;Zonas de riesgo cat�strofes naturales;binario;Amenazas;;si
+AMB-010-A;Cienagas;excluyente;Areas;;no
+AMB-011-A;R�os (Drenaje doble);excluyente;Areas;;no
+AMB-012-A;Humedales RAMSAR;excluyente;Areas;;no
+AMB-013-A;Lagunas;excluyente;Areas;;no
+AMB-014-A;Manglares;binario;Areas;;si
+AMB-015-A;Pantanos;excluyente;Areas;;no
+AMB-016-A;Humedales OFFSHORE;excluyente;Areas;;no
+AMB-017-A;Especies terrestres listadas en la IUCN;binario;Especies;;si
+AMB-019-A;Especies marinas listadas en la IUCN;binario;Especies;;si
+AMB-020-A;Pastos marinos;binario;Especies;;si
+AMB-021-A;Areas Coralinas;binario;Areas;;si
+AMB-022-AT;Corrientes;continua;;;no
+AMB-023-AT;Marea;continua;;;no
+AMB-024-AT;Oleaje;continua;;;no
+AMB-025-AT;Altura significativa de ola;continua;;;no
+AMB-026-AT;Vientos;continua;;;no
+AMB-027-T;Direcci�n del viento;continua;;;no
+AMB-028-AT;Suelos/litolog�a;categorica;Condiciones;;no
+AMB-029-AT;Fondos marinos;categorica;Condiciones;;no
+AMB-030-AT;Batimetr�a;continua;Condiciones;;no
+AMB-031-A;Sismicidad;binario;Amenazas;;si
+AMB-032-A;IMMA;binario;Especies;;si
+AMB-033-A;KBAs;binario;Areas;;si
+AMB-034-A;Reproducci�n aves;binario;Especies;;si
+AMB-035-A;Grupos funcionales aves IUCN;binario;Especies;;si
+AMB-036-A;Playas de anidacion tortugas de tortugas marinas;binario;Areas;;si
+AMB-037-A;Bosque seco tropical;binario;Areas;;si
+AMB-038-A;Congregaci�n de aves playeras;binario;Especies;;si
+AMB-039-A;Fallas activas y zonas de fractura;binario;Amenazas;;si
+AMB-040-A;Amenazas m�ltiples;binario;Amenazas;;si
+AMB-041-A;inundaciones;categorica;Amenazas;;no
