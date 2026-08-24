@@ -5,3 +5,10 @@ __pycache__
 vars_ambiental_ahp/
 preliminary-map/
 dist/
+scores_subcriterio_ambiental/
+*.zip
+*.tif
+ preliminary-map-old/
+ COL_wind-speed_10m.tif
+preliminary-map-old/
+preliminary-map-old

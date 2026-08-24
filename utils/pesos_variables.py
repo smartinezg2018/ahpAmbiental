@@ -33,20 +33,18 @@ CODIGOS_BIOTICAS = [
     ["AMB-019-A"],   # AMB-019 Especies marinas listadas en la IUCN
     ["AMB-017-A"],   # AMB-017 Especies aves IUCN
     ["AMB-042-A"],   # AMB-042 Especies murciélagos IUCN
-    ["AMB-020-A"],   # AMB-020 Pastos marinos
     ["AMB-038-A"],   # AMB-038 Congregación de aves playeras
     ["AMB-034-A"],   # AMB-034 Zona reproducción aves
 ]
 
 matrix_bioticas = np.array([
-    [1,    5,    2,    2,    2,    3,    4,    4],
-    [1/5,  1,    1/3,  1/3,  1/3,  1/2,  1,    1],
-    [1/2,  3,    1,    1,    1,    2,    3,    3],
-    [1/2,  3,    1,    1,    1,    2,    3,    3],
-    [1/2,  3,    1,    1,    1,    2,    3,    3],
-    [1/3,  2,    1/2,  1/2,  1/2,  1,    2,    2],
-    [1/4,  1,    1/3,  1/3,  1/3,  1/2,  1,    1],
-    [1/4,  1,    1/3,  1/3,  1/3,  1/2,  1,    1],
+    [1,   5,   1,   1,   1,   7,   4],
+    [1/5, 1,   1/5, 1/5, 1/5, 3,   1/2],
+    [1,   5,   1,   1,   1,   7,   4],
+    [1,   5,   1,   1,   1,   7,   4],
+    [1,   5,   1,   1,   1,   7,   4],
+    [1/7, 1/3, 1/7, 1/7, 1/7, 1,   1/4],
+    [1/4, 2,   1/4, 1/4, 1/4, 4,   1]
 ])
 
 # --- 2. Áreas Protegidas (n=4) ---
@@ -54,15 +52,17 @@ matrix_bioticas = np.array([
 CODIGOS_PROTEGIDAS = [
     ["AMB-033-A"],   # AMB-033 KBAs / áreas clave de biodiversidad
     ["AMB-012-A"],   # AMB-012 Humedales RAMSAR
+    ["AMB-020-A"],   # AMB-020 Pastos marinos
     ["AMB-021-A"],   # AMB-021 Áreas coralinas
     ["AMB-036-A"],   # AMB-036 Playas de anidación de tortugas
 ]
 
 matrix_protegidas = np.array([
-    [1,    1/3,  1/5,  1/2],
-    [3,    1,    1/3,  2],
-    [5,    3,    1,    4],
-    [2,    1/2,  1/4,  1],
+    [1,    1/3,  1/2, 1/5,  1/2],
+    [3,    1,    2,   1/2,  2],
+    [2,    1/2,  1,   1/3,  1],
+    [5,    2,    3,   1,    3],
+    [2,    1/2,  1,   1/3,  1],
 ])
 
 # --- 3. Amenazas (n=2) ---
