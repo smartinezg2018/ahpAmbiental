@@ -39,3 +39,9 @@ AMB-039-A;Fallas activas y zonas de fractura;binario;Amenazas;;si
 AMB-040-A;Riesgo fisico relativo;continua;Amenazas;;si
 AMB-041-A;inundaciones;categorica;Amenazas;;no
 AMB-042-A;Especies murcielagos IUCN;continua;Especies;;si
+TEC-023;Distancia nodos sin;continua;Tecnico;Tecnico;no
+TEC-032;Distancia vias;continua;Tecnico;Tecnico;no
+TEC-001;Velocidad del viento;continua;Tecnico;Tecnico;no
+TEC-024;Aeropuertos;excluyente;Tecnico;Tecnico;no
+SOC-025;Parques arqueologicos;excluyente;Social;Social;no
+SOC-026;Centros poblados;excluyente;Social;Social;no
