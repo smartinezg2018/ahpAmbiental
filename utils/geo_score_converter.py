@@ -61,12 +61,13 @@ class GeoIntervalScorer:
             return {}
 
         dic: dict[str, int] = {}
-        for interval in range(0, 6):
+        for interval in range(1, 7):
             cell = self.df_scores.loc[code].values[interval]
+            # print(cell)
             if pd.isna(cell):
                 continue
             for word in str(cell).split(";"):
-                dic[word] = interval
+                dic[word] = interval -1
         return dic
 
     def _score_series(self, series: pd.Series, codigo: str, tipo: str) -> pd.Series:
