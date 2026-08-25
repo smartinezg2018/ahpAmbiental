@@ -95,8 +95,9 @@ class GeoIntervalScorer:
 
     def _score_continuous(self, series: pd.Series, code: str) -> pd.Series:
         ranges: list[tuple[int, float, float]] = []
-        for interval in range(0, 6):
+        for interval in range(1, 7):
             cell = self.df_scores.loc[code].values[interval]
+            # print(cell)
             if pd.isna(cell) or str(cell).strip() == "":
                 continue
             parts = str(cell).split(";")
@@ -108,14 +109,16 @@ class GeoIntervalScorer:
             except ValueError:
                 continue
             low, high = min(a, b), max(a, b)
-            ranges.append((interval, low, high))
+            ranges.append((interval-1, low, high))
 
         numeric = pd.to_numeric(series, errors="coerce")
 
         def value_to_score(value):
+            # return value
             if pd.isna(value):
                 return np.nan
             for interval, low, high in ranges:
+                # print(interval,low,high,value)
                 if low <= value <= high:
                     return interval
             return np.nan
